@@ -6,7 +6,11 @@
 [![FHEVM](https://img.shields.io/badge/FHEVM-Zama-purple)](https://docs.zama.ai/fhevm)
 [![Built for Bounty](https://img.shields.io/badge/Built%20for-Zama%20Bounty-success)](https://github.com/zama-ai/bounty)
 
-**🎥 Video Demo**: [View demo.mp4] 
+**🌐 Live Demo**: https://fhe-artifact-auction.vercel.app/
+
+**📹 Video Demo**: Download and view `demo.mp4` (file must be downloaded to view, streaming not available)
+
+**🔗 GitHub**: https://github.com/KeyonCronin/fhevm-react-template
 
 **Built for the Zama FHEVM SDK Bounty** - A universal, framework-agnostic SDK that makes building confidential frontends simple, consistent, and developer-friendly.
 
@@ -321,7 +325,7 @@ npm run dev:nextjs
 cd examples/nextjs && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Then open the application in your browser.
 
 ### 2. React + Vite Example
 
@@ -341,7 +345,7 @@ npm run dev:react
 cd examples/react && npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
+Then open the application in your browser.
 
 ### 3. Auction dApp Example (Real-world)
 
@@ -362,7 +366,7 @@ npm run dev:auction
 cd examples/auction-dapp && npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
+Then open the application in your browser.
 
 **Key Demonstration**:
 - How to encrypt sensitive data (bids) before submission
