@@ -1,60 +1,43 @@
 {
   "name": "fhevm-react-template",
   "version": "1.0.0",
-  "description": "Universal SDK for building confidential dApps with FHEVM - Framework agnostic",
+  "description": "Universal FHEVM SDK for building confidential dApps",
   "private": true,
   "workspaces": [
     "packages/*",
     "examples/*"
   ],
   "scripts": {
-    "install:all": "npm install",
     "build:sdk": "npm run build --workspace=packages/fhevm-sdk",
     "dev:sdk": "npm run dev --workspace=packages/fhevm-sdk",
-    "test:sdk": "npm run test --workspace=packages/fhevm-sdk",
-    "compile": "hardhat compile",
-    "deploy": "hardhat run scripts/deploy.js",
-    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
     "dev:nextjs": "npm run dev --workspace=examples/nextjs",
     "dev:react": "npm run dev --workspace=examples/react",
     "dev:auction": "npm run dev --workspace=examples/auction-dapp",
-    "build:nextjs": "npm run build --workspace=examples/nextjs",
-    "build:react": "npm run build --workspace=examples/react",
-    "build:auction": "npm run build --workspace=examples/auction-dapp",
-    "test": "npm run test:sdk && npm run test:examples",
-    "test:examples": "npm run test --workspaces --if-present",
+    "compile": "cd ../.. && npm run compile",
+    "deploy": "cd ../.. && npm run deploy",
+    "deploy:sepolia": "cd ../.. && npm run deploy:sepolia",
+    "test": "cd ../.. && npm test",
     "lint": "npm run lint --workspaces --if-present",
-    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "clean": "npm run clean --workspaces --if-present && hardhat clean"
+    "clean": "rm -rf node_modules packages/*/node_modules examples/*/node_modules packages/*/dist"
   },
   "keywords": [
     "fhevm",
     "fhe",
     "encryption",
     "zama",
-    "web3",
-    "ethereum",
+    "blockchain",
     "privacy",
     "sdk",
     "react",
-    "nextjs",
-    "vue"
+    "nextjs"
   ],
-  "author": "",
+  "author": "FHEVM Community",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KeyonCronin/FHEArtifactAuction.git"
+  },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@nomicfoundation/hardhat-verify": "^2.0.0",
-    "hardhat": "^2.22.0",
-    "prettier": "^3.2.0",
     "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@fhevm/solidity": "^0.5.0",
-    "dotenv": "^16.4.5"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
   }
 }
