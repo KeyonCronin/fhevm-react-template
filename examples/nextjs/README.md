@@ -39,7 +39,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Then open the application in your browser. in your browser.
 
 ### Build
 

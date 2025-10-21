@@ -26,7 +26,7 @@ npm install
 npm run dev:auction
 ```
 
-Open [http://localhost:5173](http://localhost:5173)
+Then open the application in your browser.
 
 ## How It Works
 
