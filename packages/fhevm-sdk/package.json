@@ -1,44 +1,75 @@
 {
   "name": "@fhevm/sdk",
   "version": "1.0.0",
-  "description": "Universal SDK for building confidential dApps with FHEVM - Framework agnostic",
+  "description": "Universal SDK for building confidential dApps with Zama's FHEVM",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.esm.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./react": {
+      "require": "./dist/react.js",
+      "import": "./dist/react.esm.js",
+      "types": "./dist/react.d.ts"
+    }
+  },
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "test": "jest",
+    "build": "tsc && rollup -c",
+    "dev": "tsc --watch",
     "lint": "eslint src --ext .ts,.tsx",
-    "typecheck": "tsc --noEmit"
+    "test": "jest",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "fhevm",
     "fhe",
     "encryption",
     "zama",
-    "web3",
-    "ethereum",
-    "privacy"
+    "blockchain",
+    "privacy",
+    "confidential",
+    "sdk"
   ],
-  "author": "",
+  "author": "FHEVM Community",
   "license": "MIT",
   "peerDependencies": {
+    "react": ">=18.0.0",
     "ethers": "^6.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   },
   "dependencies": {
     "fhevmjs": "^0.5.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/react": "^18.2.0",
     "@types/node": "^20.0.0",
-    "rollup": "^4.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "rollup": "^3.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-commonjs": "^25.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KeyonCronin/FHEArtifactAuction.git",
+    "directory": "fhevm-react-template/packages/fhevm-sdk"
   }
 }

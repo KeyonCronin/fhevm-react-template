@@ -1,67 +1,37 @@
-/**
- * Core types for FHEVM SDK
- */
-
 import type { Provider, Signer } from 'ethers';
+import type { FhevmInstance } from 'fhevmjs';
 
-/**
- * FHEVM client configuration
- */
 export interface FhevmClientConfig {
-  /** Ethereum provider */
   provider: Provider;
-  /** Network configuration */
   network?: NetworkConfig;
-  /** Gateway URL for decryption */
   gatewayUrl?: string;
-  /** ACL contract address */
   aclAddress?: string;
 }
 
-/**
- * Network configuration
- */
 export interface NetworkConfig {
   chainId: number;
   name: string;
-  rpcUrl: string;
-  gatewayUrl?: string;
-  aclAddress?: string;
+  rpcUrl?: string;
 }
 
-/**
- * Encrypted input for contract calls
- */
 export interface EncryptedInput {
   handles: string[];
   inputProof: string;
 }
 
-/**
- * Decryption request
- */
 export interface DecryptionRequest {
-  /** Contract address */
   contractAddress: string;
-  /** Encrypted handle */
   handle: string;
-  /** User address */
-  userAddress: string;
+  userAddress?: string;
+  signer?: Signer;
 }
 
-/**
- * Decryption result
- */
 export interface DecryptionResult {
-  /** Decrypted value */
   value: bigint | boolean | number;
-  /** Original type */
   type: FheType;
+  signature?: string;
 }
 
-/**
- * FHE data types
- */
 export enum FheType {
   EUINT8 = 'euint8',
   EUINT16 = 'euint16',
@@ -73,43 +43,23 @@ export enum FheType {
   EADDRESS = 'eaddress',
 }
 
-/**
- * EIP-712 signature for decryption
- */
-export interface EIP712Signature {
-  signature: string;
-  publicKey: string;
-}
-
-/**
- * FHEVM instance interface
- */
-export interface FhevmInstance {
-  createEncryptedInput(contractAddress: string, userAddress: string): EncryptedInputBuilder;
+export interface FhevmClient {
+  instance: FhevmInstance | null;
+  provider: Provider;
+  config: FhevmClientConfig;
+  isInitialized: boolean;
+  initialize(): Promise<void>;
   getPublicKey(contractAddress: string): Promise<string>;
-  generatePublicKey(): Promise<string>;
 }
 
-/**
- * Encrypted input builder
- */
 export interface EncryptedInputBuilder {
-  add8(value: number): this;
-  add16(value: number): this;
-  add32(value: number): this;
-  add64(value: bigint | number): this;
-  add128(value: bigint): this;
-  add256(value: bigint): this;
-  addBool(value: boolean): this;
-  addAddress(value: string): this;
+  add8(value: number): EncryptedInputBuilder;
+  add16(value: number): EncryptedInputBuilder;
+  add32(value: number): EncryptedInputBuilder;
+  add64(value: bigint | number): EncryptedInputBuilder;
+  add128(value: bigint): EncryptedInputBuilder;
+  add256(value: bigint): EncryptedInputBuilder;
+  addBool(value: boolean): EncryptedInputBuilder;
+  addAddress(value: string): EncryptedInputBuilder;
   encrypt(): Promise<EncryptedInput>;
-}
-
-/**
- * Contract interaction helper
- */
-export interface ContractHelper {
-  address: string;
-  abi: any[];
-  signer: Signer;
 }

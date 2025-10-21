@@ -1,106 +1,78 @@
-/**
- * FHEVM Client - Core client for interacting with FHEVM
- */
-
-import { createInstance, initFhevm } from 'fhevmjs';
+import { createInstance, FhevmInstance, initFhevm } from 'fhevmjs';
 import type { Provider } from 'ethers';
-import type { FhevmClientConfig, FhevmInstance } from './types';
+import type { FhevmClientConfig, FhevmClient as IFhevmClient } from './types';
 
-/**
- * Main FHEVM client class
- */
-export class FhevmClient {
+export class FhevmClient implements IFhevmClient {
   private static instance: FhevmClient | null = null;
-  private fhevmInstance: any = null;
-  private provider: Provider;
-  private config: FhevmClientConfig;
-  private initialized: boolean = false;
+  
+  public instance: FhevmInstance | null = null;
+  public provider: Provider;
+  public config: FhevmClientConfig;
+  public isInitialized: boolean = false;
 
   private constructor(config: FhevmClientConfig) {
-    this.provider = config.provider;
     this.config = config;
+    this.provider = config.provider;
   }
 
-  /**
-   * Get singleton instance
-   */
-  static getInstance(config: FhevmClientConfig): FhevmClient {
+  public static async create(config: FhevmClientConfig): Promise<FhevmClient> {
     if (!FhevmClient.instance) {
       FhevmClient.instance = new FhevmClient(config);
+      await FhevmClient.instance.initialize();
     }
     return FhevmClient.instance;
   }
 
-  /**
-   * Initialize FHEVM client
-   */
-  async initialize(): Promise<void> {
-    if (this.initialized) {
+  public async initialize(): Promise<void> {
+    if (this.isInitialized) {
       return;
     }
 
     try {
-      // Initialize fhevmjs
+      // Initialize FHEVM
       await initFhevm();
 
-      // Get network details
+      // Get network information
       const network = await this.provider.getNetwork();
       const chainId = Number(network.chainId);
 
       // Create FHEVM instance
-      this.fhevmInstance = await createInstance({
+      this.instance = await createInstance({
         chainId,
         network: this.provider,
         gatewayUrl: this.config.gatewayUrl,
         aclAddress: this.config.aclAddress,
       });
 
-      this.initialized = true;
+      this.isInitialized = true;
     } catch (error) {
       console.error('Failed to initialize FHEVM client:', error);
-      throw new Error(`FHEVM initialization failed: ${error}`);
+      throw new Error('FHEVM initialization failed');
     }
   }
 
-  /**
-   * Get FHEVM instance
-   */
-  getInstance(): any {
-    if (!this.initialized || !this.fhevmInstance) {
-      throw new Error('FHEVM client not initialized. Call initialize() first.');
+  public async getPublicKey(contractAddress: string): Promise<string> {
+    if (!this.instance) {
+      throw new Error('FHEVM client not initialized');
     }
-    return this.fhevmInstance;
+
+    try {
+      const publicKey = this.instance.getPublicKey(contractAddress);
+      return publicKey;
+    } catch (error) {
+      console.error('Failed to get public key:', error);
+      throw new Error('Failed to retrieve public key');
+    }
   }
 
-  /**
-   * Check if client is initialized
-   */
-  isInitialized(): boolean {
-    return this.initialized;
-  }
-
-  /**
-   * Get provider
-   */
-  getProvider(): Provider {
-    return this.provider;
-  }
-
-  /**
-   * Reset instance (for testing)
-   */
-  static resetInstance(): void {
-    FhevmClient.instance = null;
+  public getInstance(): FhevmInstance {
+    if (!this.instance) {
+      throw new Error('FHEVM client not initialized');
+    }
+    return this.instance;
   }
 }
 
-/**
- * Create and initialize FHEVM client
- * @param config Client configuration
- * @returns Initialized FHEVM client
- */
 export async function createFhevmClient(config: FhevmClientConfig): Promise<FhevmClient> {
-  const client = FhevmClient.getInstance(config);
-  await client.initialize();
-  return client;
+  return FhevmClient.create(config);
 }
