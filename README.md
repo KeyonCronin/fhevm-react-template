@@ -6,7 +6,7 @@
 [![FHEVM](https://img.shields.io/badge/FHEVM-Zama-purple)](https://docs.zama.ai/fhevm)
 [![Built for Bounty](https://img.shields.io/badge/Built%20for-Zama%20Bounty-success)](https://github.com/zama-ai/bounty)
 
-**🎥 Video Demo**: [View demo.mp4](./demo.mp4)
+**🎥 Video Demo**: [View demo.mp4] 
 
 **Built for the Zama FHEVM SDK Bounty** - A universal, framework-agnostic SDK that makes building confidential frontends simple, consistent, and developer-friendly.
 
@@ -52,17 +52,20 @@ fhevm-react-template/
 │   │   ├── components/
 │   │   └── package.json
 │   │
-│   ├── react/                  # React example
+│   ├── react/                  # React + Vite example
 │   │   ├── src/
-│   │   └── package.json
+│   │   ├── package.json
+│   │   └── vite.config.ts
 │   │
-│   └── auction-dapp/           # Real-world example (from existing dapp)
+│   └── auction-dapp/           # Real-world auction example
 │       ├── src/
-│       └── package.json
+│       ├── package.json
+│       └── vite.config.ts
 │
 ├── contracts/                  # Solidity contracts
 │   ├── Counter.sol
-│   └── ConfidentialAuction.sol
+│   ├── ConfidentialArtifactAuction.sol
+│   └── README.md
 │
 ├── package.json               # Root package.json (monorepo)
 ├── demo.mp4                   # Video demonstration
@@ -297,50 +300,75 @@ function Counter() {
 
 ## 🎨 Examples
 
-### Next.js Example
+This monorepo includes three complete examples demonstrating SDK integration:
 
-Location: `examples/nextjs`
+### 1. Next.js Example (Required)
 
-Features:
-- App Router (Next.js 14+)
+**Location**: `examples/nextjs`
+
+**Features**:
+- Next.js 14 App Router
 - Server Components + Client Components
-- SDK integration
-- TypeScript
+- FHEVM SDK integration with React hooks
+- Encrypted counter demonstration
+- Wallet connection flow
+- TypeScript throughout
 
+**Run**:
 ```bash
-cd examples/nextjs
-npm run dev
+npm run dev:nextjs
+# or
+cd examples/nextjs && npm run dev
 ```
 
-### React Example
+Open [http://localhost:3000](http://localhost:3000)
 
-Location: `examples/react`
+### 2. React + Vite Example
 
-Features:
-- Vite + React
-- React Router
-- SDK integration
-- TypeScript
+**Location**: `examples/react`
 
+**Features**:
+- React 18 with Vite
+- Fast HMR (Hot Module Replacement)
+- SDK integration pattern
+- TypeScript support
+- Lightweight setup
+
+**Run**:
 ```bash
-cd examples/react
-npm run dev
+npm run dev:react
+# or
+cd examples/react && npm run dev
 ```
 
-### Auction dApp Example
+Open [http://localhost:5173](http://localhost:5173)
 
-Location: `examples/auction-dapp`
+### 3. Auction dApp Example (Real-world)
 
-Real-world example using:
-- Confidential bidding
-- Artifact authentication
-- FHE encryption for bids
-- Complete auction lifecycle
+**Location**: `examples/auction-dapp`
 
+**Features**:
+- Real-world confidential auction use case
+- Encrypted bid submission with FHE
+- Integration with ConfidentialArtifactAuction contract
+- Privacy-preserving bidding
+- React + Vite setup
+- Complete user flow demonstration
+
+**Run**:
 ```bash
-cd examples/auction-dapp
-npm run dev
+npm run dev:auction
+# or
+cd examples/auction-dapp && npm run dev
 ```
+
+Open [http://localhost:5173](http://localhost:5173)
+
+**Key Demonstration**:
+- How to encrypt sensitive data (bids) before submission
+- User authentication flow
+- Real contract interaction patterns
+- Privacy preservation in DeFi applications
 
 ---
 
@@ -560,7 +588,9 @@ npm publish
 ### Examples
 
 **Next.js**: [https://fhevm-nextjs.vercel.app](https://fhevm-nextjs.vercel.app)
+
 **React**: [https://fhevm-react.vercel.app](https://fhevm-react.vercel.app)
+
 **Auction**: [https://fhevm-auction.vercel.app](https://fhevm-auction.vercel.app)
 
 ---
