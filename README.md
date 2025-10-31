@@ -46,14 +46,35 @@ fhevm-react-template/
 │       │   │   └── types.ts
 │       │   ├── react/          # React-specific hooks
 │       │   │   ├── hooks.ts
-│       │   │   └── provider.tsx
+│       │   │   ├── context.tsx
+│       │   │   └── index.ts
+│       │   ├── adapters/       # Framework adapters
+│       │   │   └── vue.ts      # Vue 3 composables
+│       │   ├── utils/          # Utility functions
+│       │   │   ├── validation.ts
+│       │   │   ├── formatting.ts
+│       │   │   └── errors.ts
 │       │   └── index.ts
-│       └── package.json
+│       ├── package.json
+│       ├── README.md
+│       └── tsconfig.json
 │
-├── examples/
-│   ├── nextjs/                 # Next.js example (Required)
+├── examples/                   # Complete example applications
+│   ├── nextjs/                 # Next.js 14 App Router example (Required)
 │   │   ├── app/
+│   │   │   ├── api/            # API routes (FHE operations)
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   └── globals.css
 │   │   ├── components/
+│   │   │   ├── ui/             # Base UI components
+│   │   │   ├── fhe/            # FHE feature components
+│   │   │   └── examples/       # Use case examples
+│   │   ├── lib/
+│   │   │   ├── fhe/            # FHE utilities
+│   │   │   └── utils/          # Helper functions
+│   │   ├── hooks/              # Custom React hooks
+│   │   ├── types/              # TypeScript types
 │   │   └── package.json
 │   │
 │   ├── react/                  # React + Vite example
@@ -61,10 +82,19 @@ fhevm-react-template/
 │   │   ├── package.json
 │   │   └── vite.config.ts
 │   │
-│   └── auction-dapp/           # Real-world auction example
-│       ├── src/
+│   ├── auction-dapp/           # Real-world auction example
+│   │   ├── src/
+│   │   ├── package.json
+│   │   └── vite.config.ts
+│   │
+│   └── ConfidentialArtifactAuction/  # Full-featured auction platform
+│       ├── src/                      # React + TypeScript source
 │       ├── package.json
-│       └── vite.config.ts
+│       ├── vite.config.ts
+│       └── tsconfig.json
+│
+├── templates/                  # Reference to example templates
+│   └── README.md               # Template usage guide
 │
 ├── contracts/                  # Solidity contracts
 │   ├── Counter.sol
@@ -84,7 +114,7 @@ fhevm-react-template/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/fhevm-react-template.git
+git clone https://github.com/KeyonCronin/fhevm-react-template.git
 cd fhevm-react-template
 
 # Install all packages
@@ -304,19 +334,41 @@ function Counter() {
 
 ## 🎨 Examples
 
-This monorepo includes three complete examples demonstrating SDK integration:
+This monorepo includes four complete examples demonstrating SDK integration:
 
 ### 1. Next.js Example (Required)
 
 **Location**: `examples/nextjs`
 
 **Features**:
-- Next.js 14 App Router
-- Server Components + Client Components
-- FHEVM SDK integration with React hooks
-- Encrypted counter demonstration
-- Wallet connection flow
-- TypeScript throughout
+- Next.js 14 App Router with Server and Client Components
+- Complete SDK integration with custom hooks
+- Comprehensive component library (UI, FHE, Examples)
+- API routes for server-side FHE operations
+- Banking and Medical use case examples
+- Key management system
+- Full TypeScript support with type definitions
+
+**Structure**:
+```
+nextjs/
+├── app/
+│   ├── api/                 # FHE API routes
+│   │   ├── fhe/             # Encrypt, decrypt, compute
+│   │   └── keys/            # Key management
+│   ├── layout.tsx
+│   ├── page.tsx
+│   └── globals.css
+├── components/
+│   ├── ui/                  # Button, Input, Card
+│   ├── fhe/                 # FHEProvider, EncryptionDemo, ComputationDemo
+│   └── examples/            # BankingExample, MedicalExample
+├── lib/
+│   ├── fhe/                 # Client, server, keys management
+│   └── utils/               # Security, validation utilities
+├── hooks/                   # useFHE, useEncryption, useComputation
+└── types/                   # FHE and API type definitions
+```
 
 **Run**:
 ```bash
@@ -325,7 +377,7 @@ npm run dev:nextjs
 cd examples/nextjs && npm run dev
 ```
 
-Then open the application in your browser.
+Then open http://localhost:3000
 
 ### 2. React + Vite Example
 
@@ -374,6 +426,37 @@ Then open the application in your browser.
 - Real contract interaction patterns
 - Privacy preservation in DeFi applications
 
+### 4. Confidential Artifact Auction (Full-Featured)
+
+**Location**: `examples/ConfidentialArtifactAuction`
+
+**Features**:
+- Complete auction platform with React + Vite + TypeScript
+- Full FHEVM SDK integration for encrypted operations
+- Comprehensive auction management:
+  - Create auctions with detailed artifact information
+  - Place encrypted bids with privacy guarantees
+  - Artifact authentication system
+  - Auction ending and winner determination
+  - Earnings withdrawal for sellers
+  - View auction results
+- Tab-based navigation interface
+- Professional UI with responsive design
+- Real-world DeFi application example
+
+**Run**:
+```bash
+cd examples/ConfidentialArtifactAuction && npm run dev
+```
+
+Then open the application in your browser.
+
+**Key Demonstration**:
+- Complete dApp lifecycle from creation to settlement
+- Multi-role system (sellers, bidders, authenticators)
+- Privacy-preserving auction mechanics
+- Integration patterns for complex applications
+
 ---
 
 ## 🌐 Framework Support
@@ -405,6 +488,55 @@ import { FhevmProvider } from '@fhevm/sdk/react';
 ```
 
 ---
+
+## 🏗️ Next.js Example Deep Dive
+
+The Next.js example provides a comprehensive, production-ready structure:
+
+### Component Architecture
+
+**UI Components** (`components/ui/`):
+- `Button.tsx` - Reusable button with loading states and variants
+- `Input.tsx` - Form input with labels, errors, and helper text
+- `Card.tsx` - Container component for consistent styling
+
+**FHE Components** (`components/fhe/`):
+- `FHEProvider.tsx` - Context provider for FHE client
+- `EncryptionDemo.tsx` - Interactive encryption demonstration
+- `ComputationDemo.tsx` - Homomorphic computation examples
+- `KeyManager.tsx` - Public key management interface
+
+**Example Components** (`components/examples/`):
+- `BankingExample.tsx` - Confidential banking transactions
+- `MedicalExample.tsx` - HIPAA-compliant medical records
+
+### Custom Hooks
+
+Located in `hooks/`:
+- `useFHE.ts` - Main FHE client hook with initialization
+- `useEncryption.ts` - Encryption operations with loading states
+- `useComputation.ts` - Homomorphic computation helpers
+
+### Library Functions
+
+**FHE Operations** (`lib/fhe/`):
+- `client.ts` - Client-side FHE manager singleton
+- `server.ts` - Server-side FHE operations
+- `keys.ts` - Key management with metadata
+- `types.ts` - FHE type definitions
+
+**Utilities** (`lib/utils/`):
+- `security.ts` - Address validation, rate limiting
+- `validation.ts` - Request validation for all operations
+
+### API Routes
+
+All routes in `app/api/`:
+- `fhe/route.ts` - Main FHE API endpoint
+- `fhe/encrypt/route.ts` - Encryption requests
+- `fhe/decrypt/route.ts` - Decryption with signature verification
+- `fhe/compute/route.ts` - Homomorphic computations
+- `keys/route.ts` - Public key retrieval and storage
 
 ## 📚 API Reference
 
@@ -498,9 +630,11 @@ npm test
 ## 📖 Documentation
 
 - [SDK Documentation](./packages/fhevm-sdk/README.md)
+- [Examples Overview](./examples/README.md)
 - [Next.js Example](./examples/nextjs/README.md)
 - [React Example](./examples/react/README.md)
 - [Auction dApp](./examples/auction-dapp/README.md)
+- [Templates Guide](./templates/README.md)
 - [Contract Documentation](./contracts/README.md)
 
 ---
@@ -573,9 +707,15 @@ npm run format
 
 ### ✅ Creativity (Bonus)
 - Multiple framework examples (Next.js, React, Node.js)
-- Real-world dApp example
-- TypeScript throughout
+- Real-world dApp example (Auction with confidential bids)
+- Vue 3 adapter with composables
+- Comprehensive Next.js structure with 20+ components
+- Banking and Medical use case examples
+- Complete API routes for server-side operations
+- TypeScript throughout with full type safety
 - Monorepo structure with shared SDK
+- Utility functions (validation, formatting, errors)
+- Production-ready patterns and error handling
 
 ---
 
@@ -589,15 +729,7 @@ cd packages/fhevm-sdk
 npm publish
 ```
 
-### Examples
 
-**Next.js**: [https://fhevm-nextjs.vercel.app](https://fhevm-nextjs.vercel.app)
-
-**React**: [https://fhevm-react.vercel.app](https://fhevm-react.vercel.app)
-
-**Auction**: [https://fhevm-auction.vercel.app](https://fhevm-auction.vercel.app)
-
----
 
 ## 🤝 Contributing
 
